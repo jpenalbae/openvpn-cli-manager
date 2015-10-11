@@ -1,14 +1,15 @@
 {
-  "name": "openvpn-client-manager",
+  "name": "openvpn-cli-manager",
   "version": "1.0.0",
   "description": "Simple command line openvpn manager written in node.js",
   "main": "openvpn-manager.js",
+  "bin": { "openvpn-cli-manager" : "./openvpn-manager.js" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jpenalbae/openvpn-client-manager.git"
+    "url": "https://github.com/jpenalbae/openvpn-cli-manager.git"
   },
   "keywords": [
     "openvpn",
@@ -18,9 +19,9 @@
   "author": "Jaime Peñalba",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/jpenalbae/openvpn-client-manager/issues"
+    "url": "https://github.com/jpenalbae/openvpn-cli-manager/issues"
   },
-  "homepage": "https://github.com/jpenalbae/openvpn-client-manager",
+  "homepage": "https://github.com/jpenalbae/openvpn-clie-manager",
   "dependencies": {
     "ps-node": "0.0.5",
     "readline-sync": "^1.2.21"
