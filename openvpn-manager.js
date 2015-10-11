@@ -28,7 +28,6 @@ function usage(argument) {
 
 
 function killOpenVPN() {
-   console.log('Exiting');
 
     ps.lookup({
         command: 'openvpn',
@@ -130,10 +129,19 @@ switch (cmd) {
             console.log(data.toString());
 
             // Request for certificate Password
-            if (data.toString().indexOf("PASSWORD:Need 'Private Key'") !== -1) {
+            if (data.toString().indexOf(">PASSWORD:Need 'Private Key'") !== -1) {
                 var password = readlineSync.question('Certificate password: ', rlOpts);
                 console.log('');
                 client.write('password "Private Key" ' + password + '\n');
+            }
+
+            // Request for user/password
+            if (data.toString().indexOf(">PASSWORD:Need 'Auth' username/password") !== -1) {
+                var username = readlineSync.question('Username: ');
+                var password = readlineSync.question('Password: ', rlOpts);
+                console.log('');
+                client.write('username "Auth" ' + username + '\n');
+                client.write('password "Auth" ' + password + '\n');
             }
             
             // Succesfully connected
@@ -163,11 +171,13 @@ switch (cmd) {
         try {
             var pid = parseInt(fs.readFileSync(pidFile).toString());
             process.kill(pid, 'SIGTERM');
-            fs.unlinkSync(pidFile);
             console.log('Seding SIGTERM to pid: ' + pid);
         } catch (e) {
             console.error('Could not find connection PID file');
         }
+
+        try { fs.unlinkSync(pidFile); } catch (e) {}
+        
         killOpenVPN();
         break;
 
