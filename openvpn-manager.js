@@ -22,7 +22,7 @@ var rlOpts = {
 
 
 function usage(argument) {
-    console.log('Usage: openvpn-manager.js [start|stop|status] [name]');
+    console.log('Usage: openvpn-manager.js [start|stop|status] [name] [gw]');
     process.exit(1);
 }
 
@@ -54,6 +54,7 @@ process.on('SIGINT', function () {
 });
 
 
+var gw_mode = process.argv[4];
 var name = process.argv[3];
 var cmd = process.argv[2];
 
@@ -67,7 +68,7 @@ if (process.getuid() !== 0) {
 }
 
 // Check args
-if ((process.argv.length !== 4) || (process.argv[2].indexOf('-h') !== -1))
+if ((process.argv.length < 4) || (process.argv[2].indexOf('-h') !== -1))
     usage();
 
 
@@ -120,9 +121,13 @@ switch (cmd) {
         cmd += ' --management ' + scktFile + ' unix';
         cmd += ' --management-up-down';
         cmd += ' --management-query-passwords --writepid ' + pidFile;
-        var res = child_process.execSync(cmd);
 
-        // Connect to the control socket
+        // Check for gateway mode
+        if (gw_mode)
+            cmd += ' --redirect-gateway def1';
+
+        // Run cmd & connect to the control socket
+        var res = child_process.execSync(cmd);
         var client = net.connect({path: scktFile});
 
         client.on('data', function(data) {
