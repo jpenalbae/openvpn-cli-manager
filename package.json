@@ -1,6 +1,6 @@
 {
   "name": "openvpn-cli-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple command line openvpn manager written in node.js",
   "main": "openvpn-manager.js",
   "bin": { "openvpn-cli-manager" : "./openvpn-manager.js" },
